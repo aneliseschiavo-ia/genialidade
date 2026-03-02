@@ -1,0 +1,30 @@
+{
+  "name": "genialidade",
+  "version": "1.0.0",
+  "description": "Anelise Methodology MVP - Diagnóstico Neural Estruturado",
+  "private": true,
+  "workspaces": [
+    "packages/backend",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspaces",
+    "build": "npm run build --workspaces",
+    "test": "npm run test --workspaces",
+    "lint": "npm run lint --workspaces",
+    "db:push": "supabase db push",
+    "db:status": "supabase status"
+  },
+  "keywords": [
+    "diagnosis",
+    "neural",
+    "blueprint",
+    "acompanhamento"
+  ],
+  "author": "Anelise Schiavo",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.98.0",
+    "dotenv": "^17.3.1"
+  }
+}

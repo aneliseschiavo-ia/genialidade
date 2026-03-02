@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  supabase:
+    image: supabase/supabase:latest
+    ports:
+      - "54321:54321"
+      - "54322:54322"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      JWT_SECRET: super-secret-jwt-token-with-at-least-32-characters-long
+      JWT_EXPIRY_SECONDS: 3600
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:54321/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local

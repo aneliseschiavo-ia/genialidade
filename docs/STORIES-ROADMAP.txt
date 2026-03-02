@@ -1,0 +1,163 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                    GENIALIDADE MVP — STORIES ROADMAP                         ║
+║                    01/03/2026 — 21 Stories Created                           ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+TIMELINE: 02/03 (Mon) — 17/03/2026 (Wed) = 15 DAYS TO FULL MVP + MARKETING
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ PHASE I: INFRAESTRUTURA (EPIC 1) — Days 2-5                                  │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  Story 1.1: Database Setup              [████████] 02/03 (BLOCKER)           │
+│  Story 1.2: Formulário Web 28Q (E1)     [████████] 03/03                     │
+│  Story 1.3: Scoring 4D                  [████████] 04/03                     │
+│  Story 1.4: Email Score+Hipótese (E2)   [████████] 04/03                     │
+│  Story 1.5: PDF Diagnóstico (E3)        [████░░░░] 05/03 (SHOULD)            │
+│  Story 1.6: Portal Cliente              [████░░░░] 05/03 (SHOULD)            │
+│                                                                               │
+│  📍 Deliverable: Fase 1 operacional (formulário → score → aprovação email)   │
+│  🎯 Target: 05/03/2026 (ready for clients to enroll)                        │
+│                                                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ PHASE II: PROCESSO (EPIC 2) — Days 5-6                                       │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  Story 2.1: Aprovação/Rejeição Logic    [████████] 05/03 (depends 1.3)       │
+│  Story 2.2: Agendamento Sessão 1:1      [████████] 06/03 (depends 2.1)       │
+│  Story 2.3: Email Confirmação Sessão    [████████] 06/03 (depends 2.2)       │
+│                                                                               │
+│  📍 Deliverable: Fluxo aprovação → agendamento → confirmação                │
+│  🎯 Target: 06/03/2026 (ready for Fase 2 sessions)                          │
+│                                                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ PHASE III: VALIDAÇÃO (EPIC 3) — Days 2-9                                     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  Story 3.1: Guia Condução Sessão        [████████] 02/03 (independent)       │
+│  Story 3.2: Caderno Inteligente (E5)    [████████] 07/03 (depends 1.1, 3.1)  │
+│  Story 3.3: Blueprint 7D + Diag (E4)    [████████] 08/03 (depends 3.1, 3.2)  │
+│  Story 3.4: Email Blueprint+Upsell      [████████] 09/03 (depends 3.3, 3.2)  │
+│                                                                               │
+│  📍 Deliverable: Fase 2 operacional (sessão → blueprint → upsell)            │
+│  🎯 Target: 09/03/2026 (MVP READY — 3 clientes podem rodar ciclo completo) │
+│                                                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ PHASE IV: ACOMPANHAMENTO (EPIC 4) — Days 9-14                                │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  Story 4.1: Dashboard Progresso 90D     [████░░░░] 12/03 (SHOULD)            │
+│  Story 4.2: Check-in Template (E6)      [████████] 11/03                     │
+│  Story 4.3: Feedback Semanal 24h (E7)   [████████] 12/03 (depends 4.2)       │
+│  Story 4.4: Sessões Mensais 4x (E8)     [████████] 13/03 (depends 4.1, 4.3)  │
+│  Story 4.5: Relatório ROI Final (E9)    [████████] 14/03 (depends 4.4)       │
+│                                                                               │
+│  📍 Deliverable: Rastreamento 90D + entregáveis (check-in, feedback, ROI)    │
+│  🎯 Target: 14/03/2026 (FULL MVP COMPLETE — ready for production)           │
+│                                                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────┐
+│ PHASE V: MARKETING (EPIC 5) — Days 15-17                                     │
+├──────────────────────────────────────────────────────────────────────────────┤
+│                                                                               │
+│  Story 5.1: Landing Page Build              [████████] 16/03 (MUST)          │
+│  Story 5.2: Email Sequences Automáticas     [████░░░░] 17/03 (SHOULD)        │
+│  Story 5.3: Copywriting Implementation      [████░░░░] 17/03 (SHOULD)        │
+│                                                                               │
+│  📍 Deliverable: Landing page + email nurture + copy management              │
+│  🎯 Target: 17/03/2026 (PRODUCTION LAUNCH — pronto pra clientes)           │
+│                                                                               │
+└──────────────────────────────────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+ENTREGÁVEIS MAPEADOS (9 TOTAL)
+
+  E1: Formulário Estratégico Web           ← Story 1.2
+  E2: Hipótese Preliminar Email            ← Story 1.4
+  E3: Diagnóstico Formal PDF               ← Story 1.5
+  E4: Blueprint 7D                         ← Story 3.3
+  E5: Acesso Caderno 90D                   ← Story 3.2
+  E6: Check-in Template Semanal            ← Story 4.2
+  E7: Feedback Semanal 24h                 ← Story 4.3
+  E8: Sessão Mensal ao Vivo                ← Story 4.4
+  E9: Relatório ROI Final                  ← Story 4.5
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MOSCOW PRIORIZAÇÃO
+
+  MUST (15 stories):
+    1.1, 1.2, 1.3, 1.4, 2.1, 2.2, 2.3, 3.1, 3.2, 3.3, 3.4, 4.2, 4.3, 4.4, 4.5, 5.1
+    = Core MVP + Acompanhamento + Landing Page (everything needed for production)
+
+  SHOULD (6 stories):
+    1.5, 1.6, 4.1, 5.2, 5.3
+    = UX enhancements + email automation + copywriting refactor (nice to have, can delay)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+DEPENDENCY GRAPH
+
+1.1 (Database) ← ABSOLUTE BLOCKER
+  ├→ 1.2 (Formulário)
+  ├→ 1.3 (Scoring)
+  ├→ 1.4 (Email) ← depends 1.3
+  ├→ 1.5 (PDF) ← depends 1.3
+  ├→ 1.6 (Portal) ← depends 1.3, 1.5
+  └→ 3.2 (Caderno) ← depends 3.1
+
+1.3 (Scoring) → 2.1 (Aprovação) → 2.2 (Agendamento) → 2.3 (Email confirm)
+
+3.1 (Guia sessão) ← independent, can start now
+  → 3.2 (Caderno)
+    → 3.3 (Blueprint) ← depends 3.2
+      → 3.4 (Upsell email) ← depends 3.3
+
+4.2 (Check-in) ← independent (database ready)
+  → 4.1 (Dashboard)
+  → 4.3 (Feedback) ← depends 4.2
+    → 4.4 (Sessões) ← depends 4.1, 4.3
+      → 4.5 (ROI) ← depends 4.4
+
+5.1 (Landing page) ← MUST (first customer touchpoint)
+  → 5.2 (Email sequences) ← depends 5.1 URL
+  → 5.3 (Copywriting) ← refactor 5.1, 5.2
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+MILESTONES
+
+  ✅ 02/03: Story 1.1 (Database) complete = can start 1.2-1.4
+  ✅ 05/03: EPIC 1 complete = Fase 1 ready (clients can enroll)
+  ✅ 06/03: EPIC 2 complete = Fluxo approval→scheduling ready
+  ✅ 09/03: EPIC 3 complete = MVP READY (full cycle Fase 1→2)
+  ✅ 14/03: EPIC 4 complete = Full MVP + acompanhamento pronto
+  ✅ 17/03: EPIC 5 complete = PRODUCTION LAUNCH (landing + nurture)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+FULL PRODUCT TIMELINE
+
+  Phase I: Infraestrutura (05/03)   → Formulário + Score + Email (Fase 1 funciona)
+  Phase II: Processo (06/03)         → Aprovação + Agendamento (Fluxo completo)
+  Phase III: Validação (09/03)       → Sessão + Blueprint + Upsell (MVP READY)
+  Phase IV: Acompanhamento (14/03)   → Check-ins + Feedback + ROI (Full cycle ready)
+  Phase V: Marketing (17/03)         → Landing + Nurture + Copy (PRODUCTION LAUNCH)
+
+  Total timeline: 01/03 - 17/03/2026 = 16 DAYS
+
+  Ready to onboard first 3 clients: 09/03/2026
+  Ready for production launch: 17/03/2026
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Created: 01/03/2026 by River (Scrum Master)
+Status: ✅ 18 stories created, reviewed, ready for @dev

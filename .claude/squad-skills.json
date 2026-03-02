@@ -1,0 +1,81 @@
+{
+  "squad": "desafio-aiox",
+  "location": "../../squads/squad-desafio-aiox-main",
+  "description": "Squad de agentes para criadores de conteúdo - Desafio AIOX",
+  "skills": [
+    {
+      "command": "aiox-chief",
+      "name": "AIOX Chief",
+      "description": "Líder e orquestrador do squad - roteia para agente certo",
+      "file": "../../squads/squad-desafio-aiox-main/agents/aiox-chief.md",
+      "icon": "👑"
+    },
+    {
+      "command": "video-editor",
+      "name": "Video Editor",
+      "description": "Corta vídeos longos em shorts/reels/clips",
+      "file": "../../squads/squad-desafio-aiox-main/agents/video-editor.md",
+      "icon": "🎬"
+    },
+    {
+      "command": "espiao",
+      "name": "Espião",
+      "description": "Analisa concorrentes e descobre padrões de sucesso",
+      "file": "../../squads/squad-desafio-aiox-main/agents/espiao.md",
+      "icon": "🕵️"
+    },
+    {
+      "command": "repurposing",
+      "name": "Repurposing",
+      "description": "Multiplica um conteúdo em múltiplos formatos",
+      "file": "../../squads/squad-desafio-aiox-main/agents/repurposing.md",
+      "icon": "♻️"
+    },
+    {
+      "command": "scriptwriter",
+      "name": "Scriptwriter",
+      "description": "Cria roteiros com hook forte e CTAs",
+      "file": "../../squads/squad-desafio-aiox-main/agents/scriptwriter.md",
+      "icon": "✍️"
+    }
+  ],
+  "workflows": [
+    {
+      "name": "cortar-video",
+      "description": "Workflow guiado para cortar vídeos",
+      "file": "../../squads/squad-desafio-aiox-main/tasks/cortar-video.md"
+    },
+    {
+      "name": "analisar-canal",
+      "description": "Workflow guiado para espionar canal",
+      "file": "../../squads/squad-desafio-aiox-main/tasks/analisar-canal.md"
+    },
+    {
+      "name": "multiplicar-conteudo",
+      "description": "Workflow de repurposing",
+      "file": "../../squads/squad-desafio-aiox-main/tasks/multiplicar-conteudo.md"
+    }
+  ],
+  "checklists": [
+    {
+      "name": "qualidade-corte",
+      "description": "Validação de cortes de vídeo",
+      "file": "../../squads/squad-desafio-aiox-main/checklists/qualidade-corte.md"
+    },
+    {
+      "name": "analise-canal",
+      "description": "Validação de análises de canal",
+      "file": "../../squads/squad-desafio-aiox-main/checklists/analise-canal.md"
+    },
+    {
+      "name": "repurposing",
+      "description": "Validação de multiplicação de conteúdo",
+      "file": "../../squads/squad-desafio-aiox-main/checklists/repurposing.md"
+    },
+    {
+      "name": "roteiro",
+      "description": "Validação de roteiros",
+      "file": "../../squads/squad-desafio-aiox-main/checklists/roteiro.md"
+    }
+  ]
+}
