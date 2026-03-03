@@ -1,0 +1,66 @@
+import Fastify from 'fastify';
+import cors from '@fastify/cors';
+import { questoesRoutes } from './routes/questoes';
+import { respostasRoutes } from './routes/respostas';
+import { formulariosRoutes } from './routes/formularios';
+
+const PORT = parseInt(process.env.PORT || '3001', 10);
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
+
+export const fastify = Fastify({
+  logger: {
+    level: LOG_LEVEL as any,
+    transport:
+      NODE_ENV === 'development'
+        ? {
+            target: 'pino-pretty',
+            options: {
+              colorize: true,
+            },
+          }
+        : undefined,
+  },
+});
+
+// CORS middleware
+fastify.register(cors, {
+  origin: true, // Allow all origins in development
+  credentials: true,
+});
+
+// Health check
+fastify.get('/health', async (request, reply) => {
+  return {
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    env: NODE_ENV,
+  };
+});
+
+// Registra rotas
+fastify.register(questoesRoutes);
+fastify.register(respostasRoutes);
+fastify.register(formulariosRoutes);
+
+// Error handler
+fastify.setErrorHandler((error: Error, request, reply) => {
+  fastify.log.error(error);
+  reply.status(500).send({
+    error: 'Erro interno do servidor',
+    message: NODE_ENV === 'development' ? error.message : undefined,
+  });
+});
+
+// Start server
+const start = async () => {
+  try {
+    await fastify.listen({ port: PORT, host: '0.0.0.0' });
+    fastify.log.info(`🚀 Backend rodando em http://localhost:${PORT}`);
+  } catch (err) {
+    fastify.log.error(err);
+    process.exit(1);
+  }
+};
+
+start();
