@@ -4,6 +4,8 @@ import { questoesRoutes } from './routes/questoes';
 import { respostasRoutes } from './routes/respostas';
 import { formulariosRoutes } from './routes/formularios';
 import { scoringRoutes } from './routes/scoring';
+import { emailRoutes } from './routes/email';
+import { startEmailScheduler } from './jobs/send-score-email';
 
 const PORT = parseInt(process.env.PORT || '3001', 10);
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -44,6 +46,7 @@ fastify.register(questoesRoutes);
 fastify.register(respostasRoutes);
 fastify.register(formulariosRoutes);
 fastify.register(scoringRoutes);
+fastify.register(emailRoutes);
 
 // Error handler
 fastify.setErrorHandler((error: Error, request, reply) => {
@@ -59,6 +62,11 @@ const start = async () => {
   try {
     await fastify.listen({ port: PORT, host: '0.0.0.0' });
     fastify.log.info(`🚀 Backend rodando em http://localhost:${PORT}`);
+
+    // Inicia email scheduler em background (apenas produção)
+    if (NODE_ENV === 'production') {
+      startEmailScheduler(60 * 60 * 1000); // A cada 1 hora
+    }
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
