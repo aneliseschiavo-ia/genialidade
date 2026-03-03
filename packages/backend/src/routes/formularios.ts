@@ -1,5 +1,7 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { supabase } from '../lib/supabase';
+import { calcularScore, Resposta } from '../lib/scoring';
+import { gerarHipotese } from '../lib/hipotese';
 
 interface RespostaSubmissao {
   cliente_id: string;
@@ -92,15 +94,34 @@ export async function formulariosRoutes(fastify: FastifyInstance) {
       }
 
       // Calcular score (Story 1.3 - Scoring Logic)
-      // TODO: Implementar scoring completo em Story 1.3
-      // Por enquanto, apenas registramos o formulário
+      // Mapear respostas para formato esperado pelo scoring
+      const respostasFormatadas: Resposta[] = respostas.map((r) => {
+        const questao = questaoMap.get(r.questao_id);
+        return {
+          questao_id: r.questao_id,
+          numero: questao?.numero || 0,
+          valor_resposta: Number(r.valor_resposta),
+        };
+      });
+
+      const scoreCalculo = calcularScore(respostasFormatadas);
+      const hipotese = gerarHipotese({
+        desalinhamento_estrutural: scoreCalculo.desalinhamento_estrutural,
+        ruido_decisao: scoreCalculo.ruido_decisao,
+        vazamento_financeiro: scoreCalculo.vazamento_financeiro,
+        maturidade_estrategica: scoreCalculo.maturidade_estrategica,
+      });
+
       const scorePreliminaire = {
-        desalinhamento_estrutural: 0,
-        ruido_decisao: 0,
-        vazamento_financeiro: 0,
-        maturidade_estrategica: 0,
-        total: 0,
-        status: 'pendente_scoring', // Será calculado em Story 1.3
+        desalinhamento_estrutural: scoreCalculo.desalinhamento_estrutural,
+        ruido_decisao: scoreCalculo.ruido_decisao,
+        vazamento_financeiro: scoreCalculo.vazamento_financeiro,
+        maturidade_estrategica: scoreCalculo.maturidade_estrategica,
+        total: scoreCalculo.total,
+        aprovado: scoreCalculo.aprovado,
+        hipotese_titulo: hipotese.titulo,
+        hipotese_descricao: hipotese.hipotese,
+        status: scoreCalculo.aprovado ? 'aprovado' : 'rejeitado',
       };
 
       // Salvar formulário completo

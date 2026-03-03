@@ -3,6 +3,7 @@ import cors from '@fastify/cors';
 import { questoesRoutes } from './routes/questoes';
 import { respostasRoutes } from './routes/respostas';
 import { formulariosRoutes } from './routes/formularios';
+import { scoringRoutes } from './routes/scoring';
 
 const PORT = parseInt(process.env.PORT || '3001', 10);
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -42,6 +43,7 @@ fastify.get('/health', async (request, reply) => {
 fastify.register(questoesRoutes);
 fastify.register(respostasRoutes);
 fastify.register(formulariosRoutes);
+fastify.register(scoringRoutes);
 
 // Error handler
 fastify.setErrorHandler((error: Error, request, reply) => {
