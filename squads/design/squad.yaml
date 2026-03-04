@@ -1,0 +1,218 @@
+---
+# Design Squad — Genialidade Project
+# Purpose: Create design system, visual language, and UI components
+# Lead: José Amorim (@jose_amorim)
+# Status: Active
+# Created: 2026-03-03
+
+squad:
+  id: design
+  name: Design Squad — Genialidade
+  version: 1.0.0
+  created: 2026-03-03T00:00:00Z
+
+  # Core Purpose
+  purpose: |
+    Create a cohesive design system that translates Anelise Methodology's
+    "Diagnóstico Neural Estruturado" into a visual language, color palette,
+    typography, components, and grid system. Enable Story 1.2+ implementation
+    with consistent visual identity.
+
+  # Squad Leadership
+  lead_agent:
+    id: jose_amorim
+    name: José Amorim
+    title: Consultor & Professor Nexialista
+    role: Design Strategist & Visual Communication Lead
+    expertise:
+      - Visual communication via Espiral Expansiva (5-layer framework)
+      - Translation of complex methodology into clarity
+      - Nexialismo (multi-domain synthesis)
+      - Strategic visual frameworks
+
+    approach: |
+      José will guide the design system creation using:
+      1. Metáforas visuais antes de teoria (Visual metaphors FIRST)
+      2. Espiral Expansiva communication (layer visual complexity)
+      3. Nexialismo (synthesize methodology + visual + user experience)
+      4. Design for transformation (colors/typography reflect methodology)
+
+  # Support Team
+  support_agents:
+    - id: dev
+      name: Dex
+      role: Implementation Lead
+      responsibility: Build components, Tailwind tokens, responsive design
+
+    - id: ux-design-expert
+      name: Uma
+      role: UX/Interaction Designer
+      responsibility: User flows, interaction patterns, accessibility
+
+    - id: architect
+      name: Aria
+      role: Design System Architecture
+      responsibility: System design, scalability, design tokens strategy
+
+  # Scope & Deliverables
+  scope:
+    phase_1:
+      name: "Design System Foundation (Sprint 1)"
+      duration: "2-3 days"
+      deliverables:
+        - "Design System Documentation (DS-01)"
+        - "Color Palette & Semantic Colors (DS-02)"
+        - "Typography System (DS-03)"
+        - "Grid & Spacing System (DS-04)"
+        - "Component Library Baseline (DS-05)"
+        - "Tailwind Configuration (DS-06)"
+        - "Brand Guidelines (DS-07)"
+
+      design_tokens:
+        colors:
+          - primary (brand identity)
+          - secondary (supporting)
+          - accent (CTAs, interactive)
+          - semantic (success, error, warning, info)
+          - neutral (backgrounds, text, borders)
+
+        typography:
+          - headings (h1-h6 scale)
+          - body (reading + compact)
+          - mono (code, technical)
+          - line-heights (values)
+          - letter-spacing (metrics)
+
+        spacing:
+          - unit (base unit: 4px or 8px)
+          - scale (spacing variables: 1x, 2x, 3x, etc.)
+          - padding/margin (component spacing)
+
+        components:
+          - Button (primary, secondary, variant, loading, disabled)
+          - Input (text, email, password, select, validation states)
+          - Card (layout, shadow, spacing)
+          - Modal (dialog, alert, confirmation)
+          - Form (fields, labels, validation, help text)
+          - Layout (grid, sidebar, header, footer)
+          - Navigation (breadcrumb, tabs, menu)
+          - Badge (status, tags, labels)
+
+      visual_principles:
+        - Clarity (tradução de complexidade em clareza)
+        - Hierarchy (information architecture via visual weight)
+        - Consistency (reusable tokens across screens)
+        - Accessibility (WCAG AA, color contrast, readable typography)
+        - Transformation (colors/typography reflect methodology promise)
+
+    phase_2:
+      name: "Design System Application (Parallel with Story 1.2)"
+      duration: "2-3 days"
+      deliverables:
+        - "Form Component Design (for Story 1.2 — 28 questions)"
+        - "Results Dashboard Design (for Story 1.3 results visualization)"
+        - "Email Template Design (for Story 1.4 email identity)"
+        - "Mobile Responsive Variants"
+
+    phase_3:
+      name: "Design System Evolution (Stories 1.5+)"
+      duration: "Ongoing"
+      deliverables:
+        - "Advanced Components (Charts, Tables, Modals)"
+        - "Animation Guidelines"
+        - "Interaction Patterns"
+        - "Documentation Updates"
+
+  # Methodology
+  methodology:
+    framework: "Espiral Expansiva (José Amorim's 5-layer communication model)"
+
+    application:
+      layer_1: "Gancho Visual (Visual Hook) — Color + Typography creates emotional response"
+      layer_2: "Metáfora Visual (Visual Metaphor) — Components reflect methodology"
+      layer_3: "Fundamento (Foundation) — Design tokens + grid system"
+      layer_4: "Expansão (Expansion) — Component library + interaction patterns"
+      layer_5: "Integração (Integration) — Design system documentation + developer experience"
+
+    process:
+      step_1: "Identify visual metaphors that translate 'Diagnóstico Neural Estruturado'"
+      step_2: "Create color palette that evokes clarity, structure, neurological themes"
+      step_3: "Define typography that enables 'tradução de complexidade em clareza'"
+      step_4: "Build components as design system, not isolated UI elements"
+      step_5: "Document with Espiral Expansiva communication (5 layers)"
+
+  # Success Criteria
+  success_criteria:
+    - "Design System documentation complete and approved"
+    - "All design tokens defined and Tailwind configured"
+    - "Color palette accessible (WCAG AA contrast ratios)"
+    - "Typography scales tested for readability"
+    - "Component library covers all Story 1.2-1.5 requirements"
+    - "Design applied to Form, Results, Email, and Dashboard"
+    - "Development team (Dex) can implement with zero design ambiguity"
+    - "Design reflects Anelise Methodology visual identity"
+
+  # Dependencies
+  dependencies:
+    external_squads: []
+
+    aios_core_resources:
+      - .aios-core/development/agents/ux-design-expert.md
+      - .aios-core/development/agents/architect.md
+      - .aios-core/development/templates/design-system-tmpl.yaml
+
+    project_documents:
+      - docs/prd-oferta-mvp.md (understand methodology)
+      - docs/landing-page-formulario.md (understand content + form structure)
+      - docs/stories/1.2.story.md (form requirements)
+      - docs/stories/1.3.story.md (results visualization)
+      - docs/stories/1.4.story.md (email identity)
+
+  # Technologies
+  tech_stack:
+    design_tools:
+      - Figma (design + prototyping)
+      - Tailwind CSS (design tokens + utility classes)
+      - Storybook (component documentation)
+
+    frontend_framework:
+      - Next.js (React)
+      - Tailwind CSS
+      - TypeScript
+
+    design_patterns:
+      - Atomic Design (atoms → molecules → organisms)
+      - Design Tokens (CSS variables + Tailwind config)
+      - Component-Driven Development
+
+  # Team Members
+  team:
+    - agent_id: jose_amorim
+      role: Design Strategist (Lead)
+      start_date: 2026-03-03
+
+    - agent_id: dev
+      role: Implementation (Support)
+      start_date: 2026-03-05
+
+    - agent_id: ux-design-expert
+      role: UX/Interaction (Support)
+      start_date: 2026-03-04
+
+    - agent_id: architect
+      role: System Architecture (Consulting)
+      start_date: 2026-03-04
+
+  # Timeline
+  timeline:
+    phase_1_start: 2026-03-03
+    phase_1_end: 2026-03-06
+    phase_2_start: 2026-03-05
+    phase_2_end: 2026-03-08
+    phase_3_start: 2026-03-09
+
+    milestone_1: "Design System Foundation (DS-01 to DS-07) — 2026-03-06"
+    milestone_2: "Form Design Finalized (Story 1.2 ready) — 2026-03-07"
+    milestone_3: "All Phase 2 Deliverables (Dashboard, Email) — 2026-03-08"
+
+---
