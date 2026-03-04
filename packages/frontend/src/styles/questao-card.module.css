@@ -1,0 +1,156 @@
+.card {
+  padding: 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: #cbd5e1;
+  background: white;
+}
+
+.card.respondida {
+  border-color: #86efac;
+  background: #f0fdf4;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.pergunta {
+  font-size: 15px;
+  font-weight: 500;
+  color: #1e293b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.badge {
+  font-size: 18px;
+  color: #16a34a;
+  flex-shrink: 0;
+}
+
+.inputContainer {
+  display: flex;
+  gap: 12px;
+}
+
+/* Likert Scale (1-5) */
+.likertContainer {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.likertLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.radioInput {
+  cursor: pointer;
+  accent-color: #3b82f6;
+}
+
+.likertValue {
+  font-size: 12px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.likertLabel input:checked + .likertValue {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Sim/Não */
+.simNaoContainer {
+  display: flex;
+  gap: 16px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.checkboxLabel input:checked + span {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+/* Select (Múltipla Escolha) */
+.selectInput {
+  padding: 8px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  color: #1e293b;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.selectInput:hover {
+  border-color: #94a3b8;
+}
+
+.selectInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Acessibilidade */
+.radioInput:focus,
+.selectInput:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Mobile responsivo */
+@media (max-width: 640px) {
+  .card {
+    padding: 12px;
+  }
+
+  .pergunta {
+    font-size: 14px;
+  }
+
+  .likertContainer {
+    gap: 6px;
+  }
+
+  .likertValue {
+    font-size: 11px;
+  }
+
+  .simNaoContainer {
+    gap: 12px;
+  }
+
+  .checkboxLabel {
+    font-size: 13px;
+  }
+
+  .selectInput {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
+}

@@ -1,218 +1,176 @@
 'use client';
 
-/**
- * FormularioDiagnostico Component
- * Manages form state, autosave, and progression
- * Story 1.2: Formulário Web 28 Questões
- */
-
-import { useEffect, useState, useCallback } from 'react';
-import { Questao, Resposta, ProgressoFormulario } from '@/types/formulario';
-import {
-  carregarQuestoes,
-  carregarRespostasExistentes,
-  salvarResposta,
-  calcularProgresso,
-  enviarRespostas,
-  obterOuCriarSessao,
-  criarFuncaoAutosaveComDebounce,
-} from '@/lib/formulario.api';
-import QuestaoGeneric from './QuestaoGeneric';
-import { questoes28 } from '@/data/questoes-28';
+import { useState, useEffect, useCallback } from 'react';
+import { QuestaoCard } from './QuestaoCard';
+import { salvarRespostas, carregarProgresso } from '@/lib/formulario.api';
 import styles from '@/styles/formulario.module.css';
+
+export interface Questao {
+  id: number;
+  bloco: number;
+  ordem: number;
+  pergunta: string;
+  tipo: 'likert' | 'sim-nao' | 'multipla';
+  opcoes?: string[];
+}
+
+interface Respostas {
+  [key: number]: number | string;
+}
 
 export function FormularioDiagnostico() {
   const [questoes, setQuestoes] = useState<Questao[]>([]);
-  const [respostas, setRespostas] = useState<Map<number, Resposta>>(new Map());
-  const [progresso, setProgresso] = useState<ProgressoFormulario | null>(null);
-  const [clienteId, setClienteId] = useState<string>('');
-  const [carregando, setCarregando] = useState(true);
+  const [respostas, setRespostas] = useState<Respostas>({});
+  const [loading, setLoading] = useState(true);
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
-  const [questaoAtual, setQuestaoAtual] = useState(0);
 
-  // Debounced autosave function
-  const autosaveDebounced = useCallback(
-    criarFuncaoAutosaveComDebounce((resposta: Resposta) => salvarResposta(resposta), 300),
-    []
-  );
-
-  // Initialize form
+  // Carregar questões do banco
   useEffect(() => {
-    const inicializar = async () => {
+    const carregarQuestoes = async () => {
       try {
-        setCarregando(true);
+        const response = await fetch('/api/questoes');
+        if (!response.ok) throw new Error('Erro ao carregar questões');
+        const data = await response.json();
+        setQuestoes(data);
 
-        // Get or create session
-        const id = obterOuCriarSessao();
-        setClienteId(id);
-
-        // Load questions (from local data or API)
-        // Using local questoes28 for now; can be replaced with API call
-        const questoesCarregadas = (questoes28 as unknown as Questao[]);
-        setQuestoes(questoesCarregadas);
-
-        // Try to load existing responses from API
-        // If API fails, continue with empty responses
-        try {
-          const respostasExistentes = await carregarRespostasExistentes(id);
-          const respostasMap = new Map(respostasExistentes.map((r) => [r.questao_id, r]));
-          setRespostas(respostasMap);
-          const prog = calcularProgresso(respostasExistentes);
-          setProgresso(prog);
-        } catch (apiError) {
-          console.warn('Could not load responses from API, starting fresh:', apiError);
-          setProgresso(calcularProgresso([]));
+        // Recuperar respostas salvas
+        const saved = await carregarProgresso();
+        if (saved.respostas) {
+          setRespostas(saved.respostas);
         }
-      } catch (error) {
-        console.error('Error initializing form:', error);
-        setErro('Erro ao carregar formulário. Tente novamente.');
+      } catch (err) {
+        setErro(err instanceof Error ? err.message : 'Erro desconhecido');
       } finally {
-        setCarregando(false);
+        setLoading(false);
       }
     };
 
-    inicializar();
+    carregarQuestoes();
   }, []);
 
-  // Handle response change
-  const handleMudarResposta = useCallback(
-    (questaoId: number, valor: number) => {
-      const novaResposta: Resposta = {
-        cliente_id: clienteId,
-        questao_id: questaoId,
-        valor_resposta: valor,
-      };
+  // Autossalva com debounce
+  const debounceSalvar = useCallback(async (novasRespostas: Respostas) => {
+    try {
+      await salvarRespostas(novasRespostas);
+      localStorage.setItem('formulario_respostas', JSON.stringify(novasRespostas));
+    } catch (err) {
+      console.error('Erro ao salvar:', err);
+    }
+  }, []);
 
-      // Update local state
-      const novasRespostas = new Map(respostas);
-      novasRespostas.set(questaoId, novaResposta);
-      setRespostas(novasRespostas);
+  const handleRespostaChange = (questaoId: number, valor: number | string) => {
+    const novasRespostas = { ...respostas, [questaoId]: valor };
+    setRespostas(novasRespostas);
 
-      // Update progress
-      const prog = calcularProgresso(Array.from(novasRespostas.values()));
-      setProgresso(prog);
+    // Autossalva
+    const timeout = setTimeout(() => {
+      debounceSalvar(novasRespostas);
+    }, 500);
 
-      // Autosave
-      autosaveDebounced(novaResposta);
-    },
-    [clienteId, respostas, autosaveDebounced]
-  );
+    return () => clearTimeout(timeout);
+  };
 
-  // Handle form submission
   const handleEnviar = async () => {
-    if (!progresso?.pode_enviar || !clienteId) {
-      setErro('Por favor, preencha todas as 28 questões antes de enviar.');
+    if (Object.keys(respostas).length !== questoes.length) {
+      setErro('Por favor, responda todas as questões');
       return;
     }
 
+    setEnviando(true);
     try {
-      setEnviando(true);
-      await enviarRespostas(clienteId, Array.from(respostas.values()));
+      const response = await fetch('/api/formularios/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ respostas }),
+      });
 
-      // Success feedback
-      alert('✅ Seu diagnóstico foi enviado com sucesso!');
-      // TODO: Redirect to results page
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      setErro('Erro ao enviar formulário. Tente novamente.');
+      if (!response.ok) throw new Error('Erro ao enviar formulário');
+
+      // Sucesso
+      localStorage.removeItem('formulario_respostas');
+      window.location.href = '/resultado';
+    } catch (err) {
+      setErro(err instanceof Error ? err.message : 'Erro ao enviar');
     } finally {
       setEnviando(false);
     }
   };
 
-  // Loading state
-  if (carregando) {
+  if (loading) {
     return (
       <div className={styles.container}>
-        <div className={styles.loadingState}>
-          <p>Carregando seu diagnóstico...</p>
-        </div>
+        <div className={styles.loading}>Carregando formulário...</div>
       </div>
     );
   }
 
-  if (questoes.length === 0) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.errorState}>
-          <p>❌ Erro: Não foi possível carregar o formulário.</p>
-        </div>
-      </div>
-    );
-  }
-
-  const questaoExibida = questoes[questaoAtual];
-  const respostaExibida = respostas.get(questaoExibida.id);
-  const podeAvançar = questaoAtual < questoes.length - 1 && !!respostaExibida;
-  const podeVoltar = questaoAtual > 0;
+  const perguntasRespondidasTotal = Object.keys(respostas).length;
+  const percentualConclusao = (perguntasRespondidasTotal / questoes.length) * 100;
 
   return (
     <div className={styles.container}>
-      <div className={styles.formularioWrapper}>
-        {/* Header */}
-        <div className={styles.header}>
-          <h1 className={styles.titulo}>Seu Diagnóstico Neural Estruturado</h1>
+      {/* Header */}
+      <div className={styles.header}>
+        <h1 className={styles.titulo}>Diagnóstico Estratégico</h1>
+        <p className={styles.descricao}>
+          Responda {questoes.length} questões cuidadosamente selecionadas para mapear sua situação
+        </p>
+      </div>
 
-          {/* Progress Bar */}
-          <div className={styles.progressContainer}>
-            <div className={styles.progressBar}>
-              <div
-                className={styles.progressFill}
-                style={{
-                  width: `${progresso?.percentual || 0}%`,
-                  transition: 'width 300ms ease',
-                }}
-              />
-            </div>
-            <p className={styles.progressText}>
-              {progresso?.questoes_preenchidas} de {progresso?.total_questoes}
-            </p>
+      {/* Barra de Progresso */}
+      <div className={styles.progressContainer}>
+        <div className={styles.progressBar}>
+          <div className={styles.progressFill} style={{ width: `${percentualConclusao}%` }} />
+        </div>
+        <span className={styles.progressText}>
+          {perguntasRespondidasTotal} de {questoes.length} questões
+        </span>
+      </div>
+
+      {/* Mensagem de Erro */}
+      {erro && <div className={styles.erro}>{erro}</div>}
+
+      {/* Questões agrupadas por bloco */}
+      <div className={styles.questoesContainer}>
+        {[1, 2, 3, 4, 5, 6].map((bloco) => (
+          <div key={bloco} className={styles.bloco}>
+            <h2 className={styles.blocoTitulo}>Bloco {bloco}</h2>
+            {questoes
+              .filter((q) => q.bloco === bloco)
+              .sort((a, b) => a.ordem - b.ordem)
+              .map((questao) => (
+                <QuestaoCard
+                  key={questao.id}
+                  questao={questao}
+                  resposta={respostas[questao.id]}
+                  onChange={handleRespostaChange}
+                />
+              ))}
           </div>
-        </div>
+        ))}
+      </div>
 
-        {/* Error Message */}
-        {erro && <div className={styles.errorMessage}>{erro}</div>}
-
-        {/* Current Question */}
-        <QuestaoGeneric
-          questao={questaoExibida}
-          respostaAtual={respostaExibida}
-          onMudarResposta={(valor) => handleMudarResposta(questaoExibida.id, valor)}
-          dimensaoPrincipal={questaoAtual === 0 ? questaoExibida.dimensao : undefined}
-        />
-
-        {/* Navigation Buttons */}
-        <div className={styles.buttonContainer}>
-          <button
-            className={`${styles.buttonSecondary} ${!podeVoltar ? styles.disabled : ''}`}
-            onClick={() => setQuestaoAtual(Math.max(0, questaoAtual - 1))}
-            disabled={!podeVoltar}
-          >
-            ← Anterior
-          </button>
-
-          {questaoAtual < questoes.length - 1 ? (
-            <button
-              className={`${styles.buttonPrimary} ${!podeAvançar ? styles.disabled : ''}`}
-              onClick={() => setQuestaoAtual(questaoAtual + 1)}
-              disabled={!podeAvançar}
-            >
-              Próxima →
-            </button>
-          ) : (
-            <button
-              className={`${styles.buttonPrimary} ${!progresso?.pode_enviar ? styles.disabled : ''}`}
-              onClick={handleEnviar}
-              disabled={!progresso?.pode_enviar || enviando}
-            >
-              {enviando ? 'Enviando...' : 'Enviar Respostas'}
-            </button>
-          )}
-        </div>
+      {/* CTA - Botão Enviar */}
+      <div className={styles.ctaContainer}>
+        <button
+          className={styles.botaoEnviar}
+          onClick={handleEnviar}
+          disabled={perguntasRespondidasTotal !== questoes.length || enviando}
+          aria-label={
+            perguntasRespondidasTotal !== questoes.length
+              ? `Responda todas as questões para continuar. ${questoes.length - perguntasRespondidasTotal} restantes`
+              : 'Enviar respostas e receber diagnóstico'
+          }
+        >
+          {enviando ? 'Processando...' : 'Enviar Respostas'}
+        </button>
+        <p className={styles.ctaTexto}>
+          {perguntasRespondidasTotal === questoes.length
+            ? 'Você completou! Clique para enviar.'
+            : `${questoes.length - perguntasRespondidasTotal} questões restantes`}
+        </p>
       </div>
     </div>
   );
 }
-
-export default FormularioDiagnostico;
