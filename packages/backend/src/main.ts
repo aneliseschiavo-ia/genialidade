@@ -10,7 +10,10 @@ import { authRoutes } from './routes/auth';
 import { portalRoutes } from './routes/portal';
 import { approvalRoutes } from './routes/approval';
 import { sessionsRoutes } from './routes/sessions';
+import { checkInsRoutes } from './routes/check-ins';
 import { startEmailScheduler } from './jobs/send-score-email';
+import { executeScheduledFeedbackJobs } from './jobs/send-weekly-feedback';
+import { executeScheduledReminderJobs } from './jobs/send-weekly-reminder';
 
 const PORT = parseInt(process.env.PORT || '3001', 10);
 const NODE_ENV = process.env.NODE_ENV || 'development';
@@ -57,6 +60,7 @@ fastify.register(authRoutes);
 fastify.register(portalRoutes);
 fastify.register(approvalRoutes);
 fastify.register(sessionsRoutes);
+fastify.register(checkInsRoutes);
 
 // Error handler
 fastify.setErrorHandler((error: Error, request, reply) => {
@@ -73,9 +77,28 @@ const start = async () => {
     await fastify.listen({ port: PORT, host: '0.0.0.0' });
     fastify.log.info(`🚀 Backend rodando em http://localhost:${PORT}`);
 
-    // Inicia email scheduler em background (apenas produção)
+    // Inicia schedulers em background (apenas produção)
     if (NODE_ENV === 'production') {
       startEmailScheduler(60 * 60 * 1000); // A cada 1 hora
+      // Executar feedback jobs a cada 30 min
+      setInterval(() => {
+        executeScheduledFeedbackJobs().catch((err) => fastify.log.error('Feedback job error:', err));
+      }, 30 * 60 * 1000);
+      // Executar reminder jobs toda segunda-feira às 09:00 AM
+      const scheduleReminderJob = () => {
+        const now = new Date();
+        const monday = new Date(now);
+        monday.setDate(now.getDate() + ((1 - now.getDay() + 7) % 7));
+        monday.setHours(9, 0, 0, 0);
+        const timeUntilMonday = monday.getTime() - now.getTime();
+        setTimeout(() => {
+          executeScheduledReminderJobs().catch((err) => fastify.log.error('Reminder job error:', err));
+          setInterval(() => {
+            executeScheduledReminderJobs().catch((err) => fastify.log.error('Reminder job error:', err));
+          }, 7 * 24 * 60 * 60 * 1000); // Semanalmente
+        }, timeUntilMonday);
+      };
+      scheduleReminderJob();
     }
   } catch (err) {
     fastify.log.error(err);
