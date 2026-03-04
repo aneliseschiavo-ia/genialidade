@@ -54,7 +54,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
           .eq('id', clienteId);
 
         if (updateError) {
-          fastify.log.error('Update client status error:', updateError);
+          fastify.log.error({ error: updateError }, 'Update client status error');
           return reply.status(500).send({
             error: 'Erro ao atualizar status cliente',
           });
@@ -72,7 +72,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
         });
 
         if (decisionError) {
-          fastify.log.error('Insert decision error:', decisionError);
+          fastify.log.error({ error: decisionError }, 'Insert decision error');
           return reply.status(500).send({
             error: 'Erro ao registrar decisão',
           });
@@ -90,7 +90,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
           });
 
           if (sessionError) {
-            fastify.log.warn('Create session error:', sessionError);
+            fastify.log.warn({ error: sessionError }, 'Create session error');
             // Não bloqueia se falhar (será criado durante agendamento Story 2.2)
           }
         }
@@ -106,7 +106,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
               status: 'pending',
             });
           } catch (err) {
-            fastify.log.warn('Create reminder error:', err);
+            fastify.log.warn({ error: err }, 'Create reminder error');
           }
         }
 
@@ -119,7 +119,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
           actions,
         });
       } catch (error) {
-        fastify.log.error('Approval decision error:', error);
+        fastify.log.error({ error }, 'Approval decision error');
         reply.status(500).send({
           error: 'Erro ao processar decisão de aprovação',
           details: error instanceof Error ? error.message : 'Unknown error',
@@ -169,7 +169,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
         });
 
         if (auditError) {
-          fastify.log.error('Audit log error:', auditError);
+          fastify.log.error({ error: auditError }, 'Audit log error');
           // Continua mesmo se falhar (override já foi feito)
         }
 
@@ -188,7 +188,7 @@ export async function approvalRoutes(fastify: FastifyInstance) {
           motivo,
         });
       } catch (error) {
-        fastify.log.error('Admin override error:', error);
+        fastify.log.error({ error }, 'Admin override error');
         reply.status(500).send({
           error: 'Erro ao aplicar override',
         });

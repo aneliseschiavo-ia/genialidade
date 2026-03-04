@@ -4,6 +4,7 @@
  */
 
 import PDFDocument from 'pdfkit';
+import { Readable } from 'stream';
 import { CadernoTemplate } from './caderno-template';
 
 export interface BlueprintPDFData {
@@ -33,9 +34,9 @@ export async function generateBlueprintPDF(data: BlueprintPDFData): Promise<Buff
       const doc = new PDFDocument({ bufferPages: true, margins: 50 });
       const chunks: Buffer[] = [];
 
-      doc.on('data', (chunk) => chunks.push(chunk));
+      doc.on('data', (chunk: Buffer) => chunks.push(chunk));
       doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', (err) => reject(err));
+      doc.on('error', (err: Error) => reject(err));
 
       // P1: Capa
       doc.rect(0, 0, doc.page.width, doc.page.height).fill(COLORS.darkGreen);

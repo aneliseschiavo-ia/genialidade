@@ -5,6 +5,7 @@
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { supabase } from '../lib/supabase';
+import { authMiddleware, AuthPayload } from '../middleware/auth';
 
 interface CheckInBody {
   week: number;
@@ -20,9 +21,11 @@ export async function checkInsRoutes(fastify: FastifyInstance) {
    * POST /api/check-ins
    * Salva check-in semanal do cliente
    * Trigger: Frontend CheckInForm.tsx após submit
+   * Requer: Bearer token JWT no header Authorization
    */
   fastify.post<{ Body: CheckInBody }>(
     '/api/check-ins',
+    { preHandler: authMiddleware },
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         const { week, indicador_value, acoes_done, bloqueadores, aprendizados, proxima_semana } = request.body as CheckInBody;
@@ -34,13 +37,9 @@ export async function checkInsRoutes(fastify: FastifyInstance) {
           });
         }
 
-        // TODO: Extrair clienteId do auth token
-        const clienteId = request.headers['x-cliente-id'] as string;
-        if (!clienteId) {
-          return reply.status(401).send({
-            error: 'Unauthorized: clienteId não fornecido',
-          });
-        }
+        // Extrair clienteId do JWT token (validado por authMiddleware)
+        const user = (request as any).user as AuthPayload;
+        const clienteId = user.clienteId;
 
         // Validar que cliente existe e está no plano 90D
         const { data: cliente } = await supabase

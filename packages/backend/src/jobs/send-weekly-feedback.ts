@@ -143,11 +143,15 @@ export async function sendWeeklyFeedback(checkInId: string, clienteId: string): 
 
     // Enviar email
     const provider = getEmailProvider();
-    await provider.sendEmail({
+    const emailResult = await provider.send({
       to: cliente.email,
       subject: `📊 Seu feedback da semana ${currentCheckIn.week} — Genialidade`,
       html: htmlContent,
     });
+
+    if (!emailResult.success) {
+      throw new Error(`Email send failed: ${emailResult.error}`);
+    }
 
     // Log envio
     await supabase.from('email_log').insert({

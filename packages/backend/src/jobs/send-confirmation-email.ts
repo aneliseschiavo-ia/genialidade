@@ -129,11 +129,15 @@ export async function sendConfirmationEmail(clienteId: string): Promise<void> {
 
     // Enviar via email provider
     const provider = getEmailProvider();
-    await provider.sendEmail({
+    const emailResult = await provider.send({
       to: cliente.email,
       subject: `✅ Sua sessão foi agendada! ${emailData.data_sessao}`,
       html: htmlContent,
     });
+
+    if (!emailResult.success) {
+      throw new Error(`Email send failed: ${emailResult.error}`);
+    }
 
     // Log envio
     await supabase.from('email_log').insert({
