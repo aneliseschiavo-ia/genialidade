@@ -8,6 +8,7 @@ import { emailRoutes } from './routes/email';
 import { pdfRoutes } from './routes/pdf';
 import { authRoutes } from './routes/auth';
 import { portalRoutes } from './routes/portal';
+import { approvalRoutes } from './routes/approval';
 import { startEmailScheduler } from './jobs/send-score-email';
 
 const PORT = parseInt(process.env.PORT || '3001', 10);
@@ -53,6 +54,7 @@ fastify.register(emailRoutes);
 fastify.register(pdfRoutes);
 fastify.register(authRoutes);
 fastify.register(portalRoutes);
+fastify.register(approvalRoutes);
 
 // Error handler
 fastify.setErrorHandler((error: Error, request, reply) => {
