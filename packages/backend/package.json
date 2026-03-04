@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/pdfkit": "^0.17.5",
     "@vitest/ui": "^4.0.18",
+    "puppeteer": "^24.37.5",
     "vitest": "^4.0.18"
   }
 }
